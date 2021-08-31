@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://narang-lab.github.io/spartans/news</id>
+    <title>SpaRTaNS Blog</title>
+    <updated>2021-09-01T00:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://narang-lab.github.io/spartans/news"/>
+    <subtitle>SpaRTaNS Blog</subtitle>
+    <icon>https://narang-lab.github.io/spartans/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[1.0 Release]]></title>
+        <id>spartans-release</id>
+        <link href="https://narang-lab.github.io/spartans/news/spartans-release"/>
+        <updated>2021-09-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Under Construction.]]></summary>
+        <author>
+            <name>Georgios Varnavides</name>
+            <uri>https://gvarnavides.com/</uri>
+        </author>
+        <author>
+            <name>Adam S Jermyn</name>
+            <uri>https://adamjermyn.com/</uri>
+        </author>
+        <author>
+            <name>Prineha Narang</name>
+            <uri>https://narang.seas.harvard.edu/</uri>
+        </author>
+    </entry>
+</feed>
