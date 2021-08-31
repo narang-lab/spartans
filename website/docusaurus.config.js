@@ -12,6 +12,7 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'narang-lab', // Usually your GitHub org/user name.
   projectName: 'spartans', // Usually your repo name.
+  trailingSlash: false, //gh-pages specific
   themeConfig: {
     navbar: {
       title: 'SpaRTaNS',
