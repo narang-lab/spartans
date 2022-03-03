@@ -4,8 +4,6 @@ sidebar_position: 1
 
 # Boltzmann Transport Equation
 
-:::caution
-
 The Boltzmann Transport Equation (BTE) is given by
 $$
 \partial_t n_i + \boldsymbol{v}_i\cdot\nabla_{\boldsymbol{r}} + \boldsymbol{F}\cdot\nabla_{\boldsymbol{k}} n_i + \Gamma_i = 0
@@ -23,7 +21,7 @@ $$
 $$
 where summation is implied over repeated indices and we have written the forcing term as a *source* of carriers $S_i = \boldsymbol{F}\cdot\nabla_{\boldsymbol{k}} n_i$.
 
-SpaRTaNS solves this equation iteratively. First, we separate the collision operator into diagonal terms, representing decay with lifetime $\tau_i$, and off-diagonal ‘mixing’ terms:
+Next, we separate the collision operator into diagonal terms, representing decay with lifetime $\tau_i$, and off-diagonal ‘mixing’ terms:
 $$
 \frac{\partial \Gamma_i}{\partial n_j} = \tau_i^{-1} \delta_{ij} - M_{ij}.
 $$
@@ -36,6 +34,8 @@ $$
 G_{ij} \equiv \tau_i M_{ij}
 $$
 with no summation implied.
+
+SpaRTaNS solves this equation iteratively. 
 
 Under Construction.
 
