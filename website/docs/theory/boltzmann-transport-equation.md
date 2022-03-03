@@ -46,7 +46,9 @@ $$
 $$
 This approach converges so long as the spectral radius of $G_{ij}$ is less than unity. Otherwise more sophisticated approaches like [Jacobi weighting](https://arxiv.org/abs/1811.01059) or alternate decompositions (e.g. choosing artificially smaller $\tau_{ij}^{-1}$, so that $M_{ij}$ has non-zero diagonal entries) must be used.
 
-Under Construction.
+### References
 
-:::
+[Varnavides+2018](https://arxiv.org/abs/1811.01059)
+
+[Jermyn+2017](https://arxiv.org/abs/1707.07060)
 
