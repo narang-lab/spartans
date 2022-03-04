@@ -41,8 +41,10 @@ $$
 $$
  where
 $$
-(1+\tau_i \boldsymbol{v}_i\cdot\nabla_{\boldsymbol{r}})\delta n_i^0 = \tau_i S_i\\
-(1+\tau_i \boldsymbol{v}_i\cdot\nabla_{\boldsymbol{r}})\delta n_i^k = G_{ij} \delta n_j^{k-1}\\
+\begin{aligned}
+(1+\tau_i \boldsymbol{v}_i\cdot\nabla_{\boldsymbol{r}})\delta n_i^0 &= \tau_i S_i \\
+(1+\tau_i \boldsymbol{v}_i\cdot\nabla_{\boldsymbol{r}})\delta n_i^k &= G_{ij} \delta n_j^{k-1}
+\end{aligned}
 $$
 This approach converges so long as the spectral radius of $G_{ij}$ is less than unity. Otherwise more sophisticated approaches like [Jacobi weighting](https://arxiv.org/abs/1811.01059) or alternate decompositions (e.g. choosing artificially smaller $\tau_{ij}^{-1}$, so that $M_{ij}$ has non-zero diagonal entries) must be used.
 
