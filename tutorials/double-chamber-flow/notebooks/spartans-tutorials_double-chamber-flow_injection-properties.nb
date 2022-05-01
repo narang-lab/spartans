@@ -1,0 +1,321 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     11026,        313]
+NotebookOptionsPosition[      9295,        272]
+NotebookOutlinePosition[      9815,        290]
+CellTagsIndexPosition[      9772,        287]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["SpaRTaNS Tutorial: Double Chamber Flow", "Chapter",
+ CellChangeTimes->{{3.860319617484828*^9, 3.860319630341159*^9}, {
+  3.860319902888459*^9, 3.860319904816514*^9}, {3.860360061754456*^9, 
+  3.860360066187158*^9}},ExpressionUUID->"c21edcc0-47ad-4bc1-bc1c-\
+b230faa6a625"],
+
+Cell["Last updated: 04/30/2022", "Subtitle",
+ CellChangeTimes->{{3.860360388542457*^9, 
+  3.860360401109686*^9}},ExpressionUUID->"d481e32c-6686-4124-90d6-\
+d24d79f00ba6"],
+
+Cell[CellGroupData[{
+
+Cell["Injection Properties", "Section",
+ CellChangeTimes->{{3.86032127399177*^9, 3.860321276199294*^9}, {
+  3.860327264480773*^9, 3.8603272775364523`*^9}, {3.860328532397242*^9, 
+  3.860328533709014*^9}},ExpressionUUID->"1ef23922-be97-4be3-9974-\
+89b44dacd333"],
+
+Cell[CellGroupData[{
+
+Cell["Finally, we define our body and surface injections", "Item",
+ CellChangeTimes->{{3.860328546939802*^9, 
+  3.8603285649080563`*^9}},ExpressionUUID->"ff80af46-46be-4f75-935c-\
+c3ed3d00855e"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+We\[CloseCurlyQuote]ll use surface injections on the channel surfaces to get \
+the current flowing\
+\>", "Subitem",
+ CellChangeTimes->{{3.860328546939802*^9, 
+  3.860328609363974*^9}},ExpressionUUID->"a2492095-37ec-4622-9408-\
+199584f4d29e"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"surfaceInjectionQ", "[", "\"\<SO2body\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", "True"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"bodyInjectionQ", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", "False"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.8599662386080093`*^9, 3.859966253994338*^9}, {
+   3.860140489026431*^9, 3.8601404944911203`*^9}, {3.860228070440246*^9, 
+   3.8602280709124203`*^9}, {3.8602545673331823`*^9, 3.860254567655457*^9}, {
+   3.8603285638762817`*^9, 3.860328571478284*^9}, {3.860328614110174*^9, 
+   3.860328616436743*^9}, 3.860335737469616*^9},
+ CellLabel->
+  "In[124]:=",ExpressionUUID->"f36fa1ee-c9d0-45ec-8b70-8d706f853ce7"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"tetrahedraIndices", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{
+    RowBox[{"First", "[", 
+     RowBox[{"ElementIncidents", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"mesh", "[", "\"\<SO2\>\"", "]"}], "[", 
+        "\"\<double-chamber\>\"", "]"}], "[", "\"\<MeshElements\>\"", "]"}], 
+      "]"}], "]"}], "-", "1"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"triangleIndices", "[", "\"\<SO2\>\"", "]"}], "[", 
+     "\"\<double-chamber\>\"", "]"}], "=", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"triangles", "[", "\"\<SO2\>\"", "]"}], "[", 
+       "\"\<double-chamber\>\"", "]"}], "[", 
+      RowBox[{"[", 
+       RowBox[{"All", ",", "1"}], "]"}], "]"}], "-", "1"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"surfaceInjection", "[", "\"\<SO2\>\"", "]"}], "[", 
+     "\"\<double-chamber\>\"", "]"}], "=", 
+    RowBox[{"ConstantArray", "[", 
+     RowBox[{"0.", ",", 
+      RowBox[{"Prepend", "[", 
+       RowBox[{
+        RowBox[{"Dimensions", "[", 
+         RowBox[{
+          RowBox[{"triangleIndices", "[", "\"\<SO2\>\"", "]"}], "[", 
+          "\"\<double-chamber\>\"", "]"}], "]"}], ",", "numberOfStates"}], 
+       "]"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"surfaceInjection", "[", "\"\<SO2\>\"", "]"}], "[", 
+     "\"\<double-chamber\>\"", "]"}], "=", 
+    RowBox[{"ReplacePart", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"surfaceInjection", "[", "\"\<SO2\>\"", "]"}], "[", 
+       "\"\<double-chamber\>\"", "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Flatten", "[", 
+       RowBox[{
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"state", ",", "triangle", ",", "order"}], "}"}], "->", 
+           RowBox[{"Max", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"velocities", "[", "\"\<SO2\>\"", "]"}], "[", 
+              RowBox[{"[", 
+               RowBox[{"state", ",", "2"}], "]"}], "]"}], ",", "0."}], 
+            "]"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"state", ",", "numberOfStates"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"triangle", ",", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"positions", "[", "\"\<SO2\>\"", "]"}], "[", 
+              "\"\<double-chamber\>\"", "]"}], "[", "4", "]"}]}], "}"}], ",", 
+          
+          RowBox[{"{", 
+           RowBox[{"order", ",", 
+            RowBox[{"{", 
+             RowBox[{"1", ",", "2", ",", "3"}], "}"}]}], "}"}]}], "]"}], ",", 
+        "2"}], "]"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"surfaceInjection", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{"ReplacePart", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"surfaceInjection", "[", "\"\<SO2\>\"", "]"}], "[", 
+      "\"\<double-chamber\>\"", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Flatten", "[", 
+      RowBox[{
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"state", ",", "triangle", ",", "order"}], "}"}], "->", 
+          RowBox[{"Min", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"velocities", "[", "\"\<SO2\>\"", "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"state", ",", "2"}], "]"}], "]"}], ",", "0."}], "]"}]}],
+          ",", 
+         RowBox[{"{", 
+          RowBox[{"state", ",", "numberOfStates"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"triangle", ",", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"positions", "[", "\"\<SO2\>\"", "]"}], "[", 
+             "\"\<double-chamber\>\"", "]"}], "[", "8", "]"}]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"order", ",", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", "2", ",", "3"}], "}"}]}], "}"}]}], "]"}], ",", 
+       "2"}], "]"}]}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.859966257913703*^9, 3.859966275789154*^9}, {
+  3.860140496742113*^9, 3.860140522218523*^9}, {3.860228071553998*^9, 
+  3.8602280769131603`*^9}, {3.8602545681267014`*^9, 3.860254571397354*^9}, {
+  3.860328619560844*^9, 3.860328734698851*^9}},
+ CellLabel->"In[60]:=",ExpressionUUID->"50bf2192-5461-49ee-908e-5e938161cf87"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["We also provide the surface boundary normals", "Item",
+ CellChangeTimes->{{3.860328794597966*^9, 
+  3.8603288072237177`*^9}},ExpressionUUID->"3935bd70-0218-4452-b7b0-\
+2d5d3f44830a"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"normalsQ", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", "True"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"normals", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{"-", 
+    RowBox[{"First", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"mesh", "[", "\"\<SO2\>\"", "]"}], "[", 
+       "\"\<double-chamber\>\"", "]"}], "[", "\"\<BoundaryNormals\>\"", "]"}],
+      "]"}]}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.8599663340247726`*^9, 3.859966345029255*^9}, {
+  3.860140539388549*^9, 3.8601405505164633`*^9}, {3.860228086459234*^9, 
+  3.8602280875373573`*^9}, {3.860254574991927*^9, 3.860254575921536*^9}, {
+  3.860328784646798*^9, 3.8603287884545927`*^9}, {3.860328869905164*^9, 
+  3.860328875704934*^9}},
+ CellLabel->"In[65]:=",ExpressionUUID->"1b5191f2-4043-4cc4-bcc7-e7c03e675804"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["And mesh connectivity", "Item",
+ CellChangeTimes->{{3.860328876702394*^9, 
+  3.860328881437166*^9}},ExpressionUUID->"98b889e1-0297-4193-8188-\
+aed15ebbdc8b"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Note: since this is an isolated geometry, we simply have an interface w/ \
+itself (periodic and diffuse)\
+\>", "Subitem",
+ CellChangeTimes->{{3.860328876702394*^9, 
+  3.860328918603245*^9}},ExpressionUUID->"604e34d3-cbe2-4d19-9352-\
+ae679dfef4d0"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"connectivity", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{"{", 
+    RowBox[{"{", "1", "}"}], "}"}]}], ";"}]], "Input",
+ CellLabel->"In[67]:=",ExpressionUUID->"aefdf229-6d13-4f10-b852-45c60c0e3c3b"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1440, 786},
+WindowMargins->{{1440, Automatic}, {0, Automatic}},
+PrivateNotebookOptions->{"CloudPublishPath"->"/Published/spartans-tutorials_\
+double-chamber-flow_injection-properties.nb"},
+FrontEndVersion->"13.0 for Linux x86 (64-bit) (December 2, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"404ad386-bafb-4e89-84f3-20a9b9fc6921"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 278, 4, 69, "Chapter",ExpressionUUID->"c21edcc0-47ad-4bc1-bc1c-b230faa6a625"],
+Cell[861, 28, 170, 3, 53, "Subtitle",ExpressionUUID->"d481e32c-6686-4124-90d6-d24d79f00ba6"],
+Cell[CellGroupData[{
+Cell[1056, 35, 261, 4, 68, "Section",ExpressionUUID->"1ef23922-be97-4be3-9974-89b44dacd333"],
+Cell[CellGroupData[{
+Cell[1342, 43, 194, 3, 32, "Item",ExpressionUUID->"ff80af46-46be-4f75-935c-c3ed3d00855e"],
+Cell[CellGroupData[{
+Cell[1561, 50, 251, 6, 26, "Subitem",ExpressionUUID->"a2492095-37ec-4622-9408-199584f4d29e"],
+Cell[1815, 58, 797, 18, 51, "Input",ExpressionUUID->"f36fa1ee-c9d0-45ec-8b70-8d706f853ce7"],
+Cell[2615, 78, 4642, 125, 298, "Input",ExpressionUUID->"50bf2192-5461-49ee-908e-5e938161cf87"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7306, 209, 188, 3, 32, "Item",ExpressionUUID->"3935bd70-0218-4452-b7b0-2d5d3f44830a"],
+Cell[7497, 214, 960, 24, 51, "Input",ExpressionUUID->"1b5191f2-4043-4cc4-bcc7-e7c03e675804"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8494, 243, 163, 3, 32, "Item",ExpressionUUID->"98b889e1-0297-4193-8188-aed15ebbdc8b"],
+Cell[CellGroupData[{
+Cell[8682, 250, 257, 6, 26, "Subitem",ExpressionUUID->"604e34d3-cbe2-4d19-9352-ae679dfef4d0"],
+Cell[8942, 258, 301, 8, 29, "Input",ExpressionUUID->"aefdf229-6d13-4f10-b852-45c60c0e3c3b"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
