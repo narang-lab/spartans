@@ -1,0 +1,540 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     18441,        532]
+NotebookOptionsPosition[     15874,        474]
+NotebookOutlinePosition[     16391,        492]
+CellTagsIndexPosition[     16348,        489]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["SpaRTaNS Tutorial: Double Chamber Flow", "Chapter",
+ CellChangeTimes->{{3.860319617484828*^9, 3.860319630341159*^9}, {
+  3.860319902888459*^9, 3.860319904816514*^9}, {3.860360061754456*^9, 
+  3.860360066187158*^9}},ExpressionUUID->"b53b3a01-20fa-4abf-b0be-\
+3a2834cbddce"],
+
+Cell["Last updated: 04/30/2022", "Subtitle",
+ CellChangeTimes->{{3.860360388542457*^9, 
+  3.860360401109686*^9}},ExpressionUUID->"acb08882-677d-4196-bc18-\
+3721b4d063c6"],
+
+Cell[CellGroupData[{
+
+Cell["Bounce Properties", "Section",
+ CellChangeTimes->{{3.86032127399177*^9, 3.860321276199294*^9}, {
+  3.860327264480773*^9, 
+  3.8603272775364523`*^9}},ExpressionUUID->"11a6073b-44a5-41ad-b809-\
+3e475656c3c3"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+We went through all that trouble above to get a mesh with a one-to-one nodal \
+and triangle correspondence between the periodic surfaces\
+\>", "Item",
+ CellChangeTimes->{{3.860327278444775*^9, 
+  3.8603273429670277`*^9}},ExpressionUUID->"65ffa563-cfd3-4807-a2eb-\
+2a624fff5d43"],
+
+Cell["as-well as automatically identified boundary groupings", "Subitem",
+ CellChangeTimes->{{3.860327278444775*^9, 
+  3.860327391274588*^9}},ExpressionUUID->"dd9ced22-56d5-4d8c-a86a-\
+56589a242d11"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Here, we use these to obtain the triangle mapping requested by SpaRTaNS\
+\>", "Item",
+ CellChangeTimes->{{3.860327400788019*^9, 3.860327457195044*^9}, {
+  3.8603275245099*^9, 
+  3.860327524511669*^9}},ExpressionUUID->"2bf12f01-71c7-4b6f-83d2-\
+cc5656163c1a"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+This has the form {outgoing_triangle_index, outgoing_triangle_vertex_index, \
+incoming_triangle_index, incoming_triangle_vertex_index}\
+\>", "Subitem",
+ CellChangeTimes->{{3.860327400788019*^9, 3.860327457195044*^9}, {
+  3.860327525091823*^9, 
+  3.860327584145455*^9}},ExpressionUUID->"99cb3104-8541-47c2-b611-\
+fdba15d17777"],
+
+Cell[CellGroupData[{
+
+Cell["for each \[OpenCurlyDoubleQuote]bounce tensor\[CloseCurlyDoubleQuote]", \
+"Subsubitem",
+ CellChangeTimes->{{3.860327400788019*^9, 3.860327457195044*^9}, {
+  3.860327525091823*^9, 
+  3.860327591961322*^9}},ExpressionUUID->"a100179a-db09-47e8-922f-\
+a4b5c5389cd1"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"triangles", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{
+    RowBox[{"Thread", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"mesh", "[", "\"\<SO2\>\"", "]"}], "[", 
+        "\"\<double-chamber\>\"", "]"}], "[", "\"\<BoundaryElements\>\"", 
+       "]"}], "[", 
+      RowBox[{"[", "1", "]"}], "]"}], "]"}], "/.", 
+    RowBox[{
+     RowBox[{"TriangleElement", "[", "a__", "]"}], ":>", 
+     RowBox[{"List", "[", "a", "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"vertices", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"mesh", "[", "\"\<SO2\>\"", "]"}], "[", "\"\<double-chamber\>\"",
+      "]"}], "[", "\"\<Coordinates\>\"", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Do", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"positions", "[", "\"\<SO2\>\"", "]"}], "[", 
+      "\"\<double-chamber\>\"", "]"}], "[", "j", "]"}], "=", 
+    RowBox[{"Flatten", "[", 
+     RowBox[{"Position", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"triangles", "[", "\"\<SO2\>\"", "]"}], "[", 
+        "\"\<double-chamber\>\"", "]"}], ",", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"t1_", ",", "t2_", ",", "t3_"}], "}"}], ",", "i_"}], "}"}],
+         "/;", 
+        RowBox[{"i", "==", "j"}]}]}], "]"}], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"j", ",", 
+     RowBox[{"Length", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"mesh", "[", "\"\<SO2\>\"", "]"}], "[", 
+        "\"\<double-chamber\>\"", "]"}], "[", 
+       "\"\<BoundaryElementMarkerUnion\>\"", "]"}], "]"}]}], "}"}]}], 
+  "]"}]}], "Input",
+ CellLabel->"In[44]:=",ExpressionUUID->"44f1fa77-8ba9-4d48-b04c-2a1ba1ffbb32"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["We will use two bounce tensors", "Item",
+ CellChangeTimes->{{3.860327400788019*^9, 3.860327457195044*^9}, {
+  3.860327525091823*^9, 
+  3.860327603553627*^9}},ExpressionUUID->"5d1bbd75-b755-4909-86d2-\
+45757d895a68"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Identity scattering across the periodic surfaces of the channel\
+\>", "Subitem",
+ CellChangeTimes->{{3.860327400788019*^9, 3.860327457195044*^9}, {
+  3.860327525091823*^9, 
+  3.860327645168119*^9}},ExpressionUUID->"8cac3dff-b3bf-47ed-9280-\
+c75003c24cdc"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+i.e. carriers from surface 4 pass straight through to surface 8, and \
+vice-versa\
+\>", "Subsubitem",
+ CellChangeTimes->{{3.860327400788019*^9, 3.860327457195044*^9}, {
+  3.860327525091823*^9, 
+  3.860327702469953*^9}},ExpressionUUID->"19bb8aaf-60e8-4257-ac6d-\
+ac80af2a512e"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"bottomTriangles", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{"Extract", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"vertices", "[", "\"\<SO2\>\"", "]"}], "[", 
+      "\"\<double-chamber\>\"", "]"}], ",", 
+     RowBox[{"List", "/@", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"triangles", "[", "\"\<SO2\>\"", "]"}], "[", 
+        "\"\<double-chamber\>\"", "]"}], "[", 
+       RowBox[{"[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"positions", "[", "\"\<SO2\>\"", "]"}], "[", 
+           "\"\<double-chamber\>\"", "]"}], "[", "4", "]"}], ",", "1"}], 
+        "]"}], "]"}]}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"bottomTrianglesOrdering", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{"Ordering", "/@", 
+    RowBox[{
+     RowBox[{"bottomTriangles", "[", "\"\<SO2\>\"", "]"}], "[", 
+     "\"\<double-chamber\>\"", "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"bottomTrianglesMapped", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{"MapAt", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"-", "#"}], "&"}], ",", 
+     RowBox[{
+      RowBox[{"bottomTriangles", "[", "\"\<SO2\>\"", "]"}], "[", 
+      "\"\<double-chamber\>\"", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"All", ",", "All", ",", "2"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"topTriangles", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{"Extract", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"vertices", "[", "\"\<SO2\>\"", "]"}], "[", 
+      "\"\<double-chamber\>\"", "]"}], ",", 
+     RowBox[{"List", "/@", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"triangles", "[", "\"\<SO2\>\"", "]"}], "[", 
+        "\"\<double-chamber\>\"", "]"}], "[", 
+       RowBox[{"[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"positions", "[", "\"\<SO2\>\"", "]"}], "[", 
+           "\"\<double-chamber\>\"", "]"}], "[", "8", "]"}], ",", "1"}], 
+        "]"}], "]"}]}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"topTrianglesOrdering", "[", "\"\<SO2\>\"", "]"}], "[", 
+     "\"\<double-chamber\>\"", "]"}], "=", 
+    RowBox[{"Ordering", "/@", 
+     RowBox[{
+      RowBox[{"topTriangles", "[", "\"\<SO2\>\"", "]"}], "[", 
+      "\"\<double-chamber\>\"", "]"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"bottomToTopMapping", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"Position", "[", 
+       RowBox[{
+        RowBox[{"Sort", "/@", 
+         RowBox[{
+          RowBox[{"topTriangles", "[", "\"\<SO2\>\"", "]"}], "[", 
+          "\"\<double-chamber\>\"", "]"}]}], ",", "#"}], "]"}], "[", 
+      RowBox[{"[", 
+       RowBox[{"1", ",", "1"}], "]"}], "]"}], "&"}], "/@", 
+    RowBox[{"(", 
+     RowBox[{"Sort", "/@", 
+      RowBox[{
+       RowBox[{"bottomTrianglesMapped", "[", "\"\<SO2\>\"", "]"}], "[", 
+       "\"\<double-chamber\>\"", "]"}]}], ")"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"bottomToTopMapping", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{"Join", "@@", 
+    RowBox[{"MapIndexed", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"positions", "[", "\"\<SO2\>\"", "]"}], "[", 
+              "\"\<double-chamber\>\"", "]"}], "[", "4", "]"}], "[", 
+            RowBox[{"[", 
+             RowBox[{"First", "[", "#2", "]"}], "]"}], "]"}], ",", 
+           RowBox[{"i", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], ",", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"positions", "[", "\"\<SO2\>\"", "]"}], "[", 
+              "\"\<double-chamber\>\"", "]"}], "[", "8", "]"}], "[", 
+            RowBox[{"[", "#1", "]"}], "]"}], ",", 
+           RowBox[{"i", "[", 
+            RowBox[{"[", "2", "]"}], "]"}]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", 
+           RowBox[{"Thread", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"bottomTrianglesOrdering", "[", "\"\<SO2\>\"", "]"}], 
+                "[", "\"\<double-chamber\>\"", "]"}], "[", 
+               RowBox[{"[", 
+                RowBox[{"First", "[", "#2", "]"}], "]"}], "]"}], ",", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"topTrianglesOrdering", "[", "\"\<SO2\>\"", "]"}], 
+                "[", "\"\<double-chamber\>\"", "]"}], "[", 
+               RowBox[{"[", "#1", "]"}], "]"}]}], "}"}], "]"}]}], "}"}]}], 
+        "]"}], "&"}], ",", 
+      RowBox[{
+       RowBox[{"bottomToTopMapping", "[", "\"\<SO2\>\"", "]"}], "[", 
+       "\"\<double-chamber\>\"", "]"}]}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"periodicMapping", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{"Join", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"bottomToTopMapping", "[", "\"\<SO2\>\"", "]"}], "[", 
+      "\"\<double-chamber\>\"", "]"}], ",", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Join", "@@", 
+        RowBox[{"Reverse", "[", 
+         RowBox[{"Partition", "[", 
+          RowBox[{"#", ",", "2"}], "]"}], "]"}]}], "&"}], "/@", 
+      RowBox[{
+       RowBox[{"bottomToTopMapping", "[", "\"\<SO2\>\"", "]"}], "[", 
+       "\"\<double-chamber\>\"", "]"}]}]}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.859642590003705*^9, 3.859642622918404*^9}, {
+  3.8596426713059053`*^9, 3.85964272022683*^9}, {3.859643612980935*^9, 
+  3.85964361335476*^9}, {3.859652947731131*^9, 3.859652949305826*^9}, {
+  3.8597405202229548`*^9, 3.859740521386239*^9}, {3.859966029441345*^9, 
+  3.8599662104461412`*^9}, {3.86013996805345*^9, 3.8601401307221746`*^9}, {
+  3.860140444451429*^9, 3.860140482380548*^9}, {3.860228005310718*^9, 
+  3.8602280692766743`*^9}, {3.860228138743264*^9, 3.860228140460034*^9}, {
+  3.860254551529854*^9, 3.860254566755843*^9}, {3.8603277248754997`*^9, 
+  3.8603277802154093`*^9}, {3.8603278107568903`*^9, 3.860327879996697*^9}, {
+  3.8603279391265087`*^9, 3.860328161531446*^9}},
+ CellLabel->"In[47]:=",ExpressionUUID->"b604a301-98d6-478c-9906-dde3bfe8a808"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["diffuse scattering across all other surfaces", "Subitem",
+ CellChangeTimes->{{3.860327400788019*^9, 3.860327457195044*^9}, {
+  3.860327525091823*^9, 
+  3.860327642860443*^9}},ExpressionUUID->"e4b822fc-b005-4f89-8811-\
+4832a3a68b3f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"diffusiveMapping", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{"Flatten", "[", 
+    RowBox[{
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"positions", "[", "\"\<SO2\>\"", "]"}], "[", 
+            "\"\<double-chamber\>\"", "]"}], "[", "i", "]"}], "[", 
+          RowBox[{"[", "n", "]"}], "]"}], ",", "t", ",", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"positions", "[", "\"\<SO2\>\"", "]"}], "[", 
+            "\"\<double-chamber\>\"", "]"}], "[", "i", "]"}], "[", 
+          RowBox[{"[", "n", "]"}], "]"}], ",", "t"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", 
+         RowBox[{"{", 
+          RowBox[{
+          "1", ",", "2", ",", "3", ",", "5", ",", "6", ",", "7", ",", "9", 
+           ",", "10"}], "}"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"n", ",", 
+         RowBox[{"Length", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"positions", "[", "\"\<SO2\>\"", "]"}], "[", 
+            "\"\<double-chamber\>\"", "]"}], "[", "i", "]"}], "]"}]}], "}"}], 
+       ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", "3"}], "}"}]}], "]"}], ",", "2"}], "]"}]}], 
+  ";"}]], "Input",
+ CellLabel->"In[55]:=",ExpressionUUID->"2252cd52-1acf-46f7-a87d-fe3c3d106cb8"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Note: Spartans unlike Mathematica uses 0-based indexing", "Subitem",
+ CellChangeTimes->{{3.860328164319128*^9, 
+  3.860328196769683*^9}},ExpressionUUID->"1e148360-adbb-440b-b317-\
+7f610903b24c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"triangleMappings", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"diffusiveMapping", "[", "\"\<SO2\>\"", "]"}], "[", 
+       "\"\<double-chamber\>\"", "]"}], ",", 
+      RowBox[{
+       RowBox[{"periodicMapping", "[", "\"\<SO2\>\"", "]"}], "[", 
+       "\"\<double-chamber\>\"", "]"}]}], "}"}], "-", "1"}]}], ";"}]], "Input",\
+
+ CellChangeTimes->{3.8603282012345877`*^9},
+ CellLabel->"In[56]:=",ExpressionUUID->"332af82a-a992-4108-96b2-f35c3e0a2df4"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["We then define our bounce tensors", "Item",
+ CellChangeTimes->{{3.860328463065164*^9, 
+  3.860328482492148*^9}},ExpressionUUID->"aedf95c0-bd3d-4e24-a025-\
+c82ae5ed5346"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"bounceTensors", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   RowBox[{"{", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"ConstantArray", "[", 
+      RowBox[{
+       RowBox[{"2.", "/", "numberOfStates"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"numberOfStates", ",", "numberOfStates"}], "}"}]}], "]"}], 
+     ",", "\[IndentingNewLine]", 
+     RowBox[{"N", "[", 
+      RowBox[{"IdentityMatrix", "[", "numberOfStates", "]"}], "]"}]}], 
+    "\[IndentingNewLine]", "}"}]}], ";"}]], "Input",
+ CellChangeTimes->{3.860328460294632*^9},
+ CellLabel->"In[57]:=",ExpressionUUID->"ce1607ac-e02d-4252-8c76-9ab2c4996ce4"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1440, 786},
+WindowMargins->{{1440, Automatic}, {0, Automatic}},
+PrivateNotebookOptions->{"CloudPublishPath"->"/Published/spartans-tutorials_\
+double-chamber-flow_bounce-properties.nb"},
+FrontEndVersion->"13.0 for Linux x86 (64-bit) (December 2, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"2c54e982-ecb1-486d-ba2f-aa44e29de02c"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 278, 4, 69, "Chapter",ExpressionUUID->"b53b3a01-20fa-4abf-b0be-3a2834cbddce"],
+Cell[861, 28, 170, 3, 53, "Subtitle",ExpressionUUID->"acb08882-677d-4196-bc18-3721b4d063c6"],
+Cell[CellGroupData[{
+Cell[1056, 35, 212, 4, 68, "Section",ExpressionUUID->"11a6073b-44a5-41ad-b809-3e475656c3c3"],
+Cell[CellGroupData[{
+Cell[1293, 43, 288, 6, 32, "Item",ExpressionUUID->"65ffa563-cfd3-4807-a2eb-2a624fff5d43"],
+Cell[1584, 51, 199, 3, 26, "Subitem",ExpressionUUID->"dd9ced22-56d5-4d8c-a86a-56589a242d11"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1820, 59, 268, 6, 32, "Item",ExpressionUUID->"2bf12f01-71c7-4b6f-83d2-cc5656163c1a"],
+Cell[CellGroupData[{
+Cell[2113, 69, 336, 7, 26, "Subitem",ExpressionUUID->"99cb3104-8541-47c2-b611-fdba15d17777"],
+Cell[CellGroupData[{
+Cell[2474, 80, 268, 5, 25, "Subsubitem",ExpressionUUID->"a100179a-db09-47e8-922f-a4b5c5389cd1"],
+Cell[2745, 87, 1906, 57, 92, "Input",ExpressionUUID->"44f1fa77-8ba9-4d48-b04c-2a1ba1ffbb32"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4712, 151, 221, 4, 32, "Item",ExpressionUUID->"5d1bbd75-b755-4909-86d2-45757d895a68"],
+Cell[CellGroupData[{
+Cell[4958, 159, 265, 6, 26, "Subitem",ExpressionUUID->"8cac3dff-b3bf-47ed-9280-c75003c24cdc"],
+Cell[CellGroupData[{
+Cell[5248, 169, 286, 7, 25, "Subsubitem",ExpressionUUID->"19bb8aaf-60e8-4257-ac6d-ac80af2a512e"],
+Cell[5537, 178, 6755, 182, 319, "Input",ExpressionUUID->"b604a301-98d6-478c-9906-dde3bfe8a808"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12341, 366, 238, 4, 26, "Subitem",ExpressionUUID->"e4b822fc-b005-4f89-8811-4832a3a68b3f"],
+Cell[12582, 372, 1463, 41, 71, "Input",ExpressionUUID->"2252cd52-1acf-46f7-a87d-fe3c3d106cb8"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[14082, 418, 200, 3, 26, "Subitem",ExpressionUUID->"1e148360-adbb-440b-b317-7f610903b24c"],
+Cell[14285, 423, 614, 17, 29, "Input",ExpressionUUID->"332af82a-a992-4108-96b2-f35c3e0a2df4"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[14948, 446, 175, 3, 32, "Item",ExpressionUUID->"aedf95c0-bd3d-4e24-a025-c82ae5ed5346"],
+Cell[15126, 451, 708, 18, 97, "Input",ExpressionUUID->"ce1607ac-e02d-4252-8c76-9ab2c4996ce4"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
