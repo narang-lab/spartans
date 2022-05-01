@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Boltzmann Transport Equation
+# Boltzmann Transport Theory
 
 The Boltzmann Transport Equation (BTE) is given by
 $$
