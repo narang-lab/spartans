@@ -1,0 +1,15 @@
+[build-system]
+requires = [
+    "setuptools",
+    "wheel",
+    "pybind11",
+    "scikit-build",
+    "cmake",
+    "ninja",
+    "mpi4py==3.0.3",
+    "numpy",
+    "h5py",
+    "PyYAML",
+    "parse",
+]
+build-backend = "setuptools.build_meta"

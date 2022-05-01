@@ -23,3 +23,9 @@ packages/docusaurus-*/lib-next/
 
 website/i18n/**/*
 
+_skbuild/*
+tests/*/out-files/*
+tests/*/log-files/*
+examples/*/out-files/*
+examples/*/log-files/*
+src/spartans.egg-info/*
