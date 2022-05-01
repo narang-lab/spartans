@@ -127,4 +127,78 @@ This, along with the `output_directory` and `log_directory` can be changed by ch
     log_directory = config_dict['directories']['log_directory']
     setup_logger('main_log', '{}/main_log.txt'.format(log_directory))
     main_log = logging.getLogger('main_log')
+```
 
+SpaRTaNS then proceeds to set up the necessary `Structure` and `Interface` objects (see [API Design section](./api-design.md)).  
+
+SpaRTaNS solves the BTE iteratively (see [Formalism section](../formalism/boltzmann-transport-theory.md)).
+As such, inputs/outputs are stored internally for each structure and iteration number.
+
+However, to avoid large output size, and since the steady-state distribution is given by the accumulated distribution functions at each iteration, SpaRTaNS only writes the accumulated distribution and surface fluxes in `{outDir}/accumulated_{structureId}.h5` by default.
+If individual distribution outputs are required (e.g. for debugging), the output files 'verbosity' can be controlled by changing the following lines:
+
+```python
+    # Set up Structure objects
+    main_log.info('Setting up Structure objects.')
+    structure_keys = [struct_key for struct_key in database_dict.keys() if 'structure(' in struct_key]
+# highlight-start
+    structures = [Structure(comm,config_dict,database_dict,struct_key, write_debug_outputs=False, 
+                  debug_frequency=1) for struct_key in structure_keys]
+# highlight-end
+```
+
+Finally, SpaRTaNS uses a `Scheduler` object (see [API Design section](./api-design.md)) to handle the various collision, and bounce operators in a logical sequence.
+The default `Scheduler` uses the following pseudo-code:
+
+```python
+for struct in structures:
+    # First push from structures interfaces
+    for interface_id, interface_object in struct.interfaces.items():
+        interface_object.push_to(struct)
+
+    # Then, run structure
+    struct.run()
+
+    # Finally, pull to structures interfaces
+    for interface_id, interface_object in struct.interfaces.items():
+        interface_object.pull_from()
+```
+
+This can be changed by modifying the following lines in `parser.py`:
+```python
+    # Set up Scheduler
+    # Note: change this to fit your needs, and/or define new schedulers in scheduler.py
+    main_log.info('Setting up Scheduler.')
+
+# highlight-start
+    from spartans.scheduler import Unweighted_simple as Scheduler
+    scheduler = Scheduler(
+            min_condition=50,
+            structures=structures
+            )
+#highlight-end
+```
+## C++ Streaming Operator Output
+
+In addition to the collision and bounce operator logs from the python side, SpaRTaNS also outputs the streaming operator logs from the c++ side, with output similar to:
+
+``` bash
+# highlight-next-line
+nTets: 7986  nUniqueTets: 6  expectedSpeedup: 1331x
+nFaces: 16698  nExtFaces: 1452
+Explicit event mode.
+nBins: 48  nEvents: 48  nVerts: 1728
+nEvents by process: [ 12 12 12 12 ]
+
+Processing events: 8% 17% 25% 33% 42% 50% 58% 67% 75% 83% 92% 100% done.
+Applying Oinv: done.
+
+# highlight-start
+Sum rule check:
+Largest sum rule error: 5.551115e-15, at ie: 8
+# highlight-end
+```
+
+Two points are of interest in the output above:  
+- SpaRTaNS recognizes the mesh is very regular and only performs streaming in the 6 `nUniqueTets` tetrahedra, rotating and translating where appropriate to achieve an expected speedup of 1331x. As such, when the geometry allows it, it's beneficial to use a regular mesh.
+- SpaRTaNS reports the largest sum-rule error ((Integrated `Body_in` + Integrated `Surface_in`) - (Integrated `Body_out` + Integrated `Surface_out`)) across states. You'll want to check this is reasonably small across all runs.
