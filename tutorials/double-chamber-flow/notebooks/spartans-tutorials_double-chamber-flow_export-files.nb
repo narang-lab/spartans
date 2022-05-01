@@ -1,0 +1,423 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     15926,        415]
+NotebookOptionsPosition[     14165,        373]
+NotebookOutlinePosition[     14677,        391]
+CellTagsIndexPosition[     14634,        388]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["SpaRTaNS Tutorial: Double Chamber Flow", "Chapter",
+ CellChangeTimes->{{3.860319617484828*^9, 3.860319630341159*^9}, {
+  3.860319902888459*^9, 3.860319904816514*^9}, {3.860360061754456*^9, 
+  3.860360066187158*^9}},ExpressionUUID->"88a630b8-b564-49ec-b697-\
+579ea9340636"],
+
+Cell["Last updated: 04/30/2022", "Subtitle",
+ CellChangeTimes->{{3.860360388542457*^9, 
+  3.860360401109686*^9}},ExpressionUUID->"097b54bc-523d-42e3-96de-\
+cb076598cddb"],
+
+Cell[CellGroupData[{
+
+Cell["Export Inputs", "Section",
+ CellChangeTimes->{{3.860328760311569*^9, 
+  3.86032876283996*^9}},ExpressionUUID->"1903f482-d0c3-41ee-9e03-\
+03367764032a"],
+
+Cell[CellGroupData[{
+
+Cell["Source Code", "Item",
+ CellChangeTimes->{{3.8603287684009867`*^9, 
+  3.860328770998992*^9}},ExpressionUUID->"1a2673c2-8972-4607-9a75-\
+136f44cd5d14"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"Needs", "[", "\"\<GeneralUtilities`\>\"", 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"pythonSession", "=", 
+    RowBox[{"StartExternalSession", "[", 
+     RowBox[{"<|", 
+      RowBox[{
+       RowBox[{"\"\<System\>\"", "\[Rule]", "\"\<Python\>\""}], ",", 
+       RowBox[{"\"\<Version\>\"", "\[Rule]", "\"\<3\>\""}]}], "|>"}], "]"}]}],
+    ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SetDirectory", "[", 
+   RowBox[{"NotebookDirectory", "[", "]"}], "]"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"prepareInputs", "[", "sym_", "]"}], "[", "geometry_", "]"}], ":=",
+    "\n", 
+   RowBox[{"<|", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"\"\<A\>\"", "\[Rule]", 
+      RowBox[{"<|", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"\"\<velocities\>\"", "\[Rule]", 
+         RowBox[{"NumericArray", "[", 
+          RowBox[{
+           RowBox[{"velocities", "[", "sym", "]"}], ",", "\"\<Real64\>\""}], 
+          "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<frequencies\>\"", "\[Rule]", 
+         RowBox[{"NumericArray", "[", 
+          RowBox[{
+           RowBox[{"frequencies", "[", "sym", "]"}], ",", "\"\<Real64\>\""}], 
+          "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<diagonal\>\"", "\[Rule]", 
+         RowBox[{"NumericArray", "[", 
+          RowBox[{
+           RowBox[{"diagonal", "[", "sym", "]"}], ",", "\"\<Real64\>\""}], 
+          "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<mixing_matrix\>\"", "\[Rule]", 
+         RowBox[{"NumericArray", "[", 
+          RowBox[{
+           RowBox[{"mixingMatrix", "[", "sym", "]"}], ",", "\"\<Real64\>\""}],
+           "]"}]}]}], "\[IndentingNewLine]", "|>"}]}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<000\>\"", "\[Rule]", 
+      RowBox[{"<|", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"\"\<vertices\>\"", "\[Rule]", 
+         RowBox[{"NumericArray", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"vertices", "[", "sym", "]"}], "[", "geometry", "]"}], 
+           ",", "\"\<Real64\>\""}], "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<tetrahedra_indices\>\"", "\[Rule]", 
+         RowBox[{"NumericArray", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"tetrahedraIndices", "[", "sym", "]"}], "[", "geometry", 
+            "]"}], ",", "\"\<Integer64\>\""}], "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<triangle_indices\>\"", "->", 
+         RowBox[{"NumericArray", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"triangleIndices", "[", "sym", "]"}], "[", "geometry", 
+            "]"}], ",", "\"\<Integer64\>\""}], "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"normalsQ", "[", "sym", "]"}], "[", "geometry", "]"}], ",", 
+          RowBox[{"\"\<surface_normals\>\"", "->", 
+           RowBox[{"NumericArray", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"normals", "[", "sym", "]"}], "[", "geometry", "]"}], 
+             ",", "\"\<Real64\>\""}], "]"}]}], ",", "Nothing"}], "]"}]}], 
+       "\[IndentingNewLine]", "|>"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{"\"\<connectivity_info\>\"", "\[Rule]", 
+      RowBox[{"<|", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"\"\<connectivity\>\"", "\[Rule]", 
+         RowBox[{"NumericArray", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"connectivity", "[", "sym", "]"}], "[", "geometry", "]"}],
+            ",", "\"\<Integer64\>\""}], "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<000--A_000--A\>\"", "->", 
+         RowBox[{"Association", "[", 
+          RowBox[{"MapIndexed", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{"StringTemplate", "[", "\"\<bounce_`1`\>\"", "]"}], 
+               "[", 
+               RowBox[{"IntegerString", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"First", "[", "#2", "]"}], "-", "1"}], ",", "10", 
+                 ",", "2"}], "]"}], "]"}], "->", 
+              RowBox[{"NumericArray", "[", 
+               RowBox[{"#1", ",", "\"\<Integer64\>\""}], "]"}]}], "&"}], ",", 
+            
+            RowBox[{
+             RowBox[{"triangleMappings", "[", "sym", "]"}], "[", "geometry", 
+             "]"}]}], "]"}], "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<bounce_tensors\>\"", "->", 
+         RowBox[{"Association", "[", 
+          RowBox[{"MapIndexed", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{"StringTemplate", "[", "\"\<bounce_`1`\>\"", "]"}], 
+               "[", 
+               RowBox[{"IntegerString", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"First", "[", "#2", "]"}], "-", "1"}], ",", "10", 
+                 ",", "2"}], "]"}], "]"}], "->", 
+              RowBox[{"NumericArray", "[", 
+               RowBox[{"#1", ",", "\"\<Real64\>\""}], "]"}]}], "&"}], ",", 
+            RowBox[{
+             RowBox[{"bounceTensors", "[", "sym", "]"}], "[", "geometry", 
+             "]"}]}], "]"}], "]"}]}]}], "\[IndentingNewLine]", "|>"}]}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<000--A\>\"", "\[Rule]", 
+      RowBox[{"<|", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"surfaceInjectionQ", "[", "sym", "]"}], "[", "geometry", 
+           "]"}], ",", 
+          RowBox[{"\"\<surface_injection\>\"", "\[Rule]", 
+           RowBox[{"NumericArray", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"surfaceInjection", "[", "sym", "]"}], "[", "geometry", 
+              "]"}], ",", "\"\<Real64\>\""}], "]"}]}], ",", "Nothing"}], 
+         "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"bodyInjectionQ", "[", "sym", "]"}], "[", "geometry", 
+           "]"}], ",", 
+          RowBox[{"\"\<body_injection\>\"", "\[Rule]", 
+           RowBox[{"NumericArray", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"bodyInjection", "[", "sym", "]"}], "[", "geometry", 
+              "]"}], ",", "\"\<Real64\>\""}], "]"}]}], ",", "Nothing"}], 
+         "]"}]}], "\[IndentingNewLine]", "|>"}]}]}], "\[IndentingNewLine]", 
+    "|>"}]}], "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"exportInputs", "[", "sym_", "]"}], "[", "geometry_", "]"}], ":=", 
+  
+  RowBox[{"Block", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"name", ",", "spartansInput"}], "}"}], ",", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"spartansInput", "=", 
+      RowBox[{
+       RowBox[{"prepareInputs", "[", "sym", "]"}], "[", "geometry", "]"}]}], 
+     ";", "\[IndentingNewLine]", 
+     RowBox[{"name", "=", 
+      RowBox[{
+       RowBox[{
+       "StringTemplate", "[", "\"\<spartans_test_`1`_`2`_dataset\>\"", "]"}], 
+       "[", 
+       RowBox[{"sym", ",", "geometry"}], "]"}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"ExportStructuredHDF5", "[", 
+      RowBox[{
+       RowBox[{"name", "<>", "\"\<.h5\>\""}], ",", "spartansInput"}], "]"}], 
+     ";", "\[IndentingNewLine]", 
+     RowBox[{"Run", "[", 
+      RowBox[{
+       RowBox[{
+       "StringTemplate", "[", 
+        "\"\<h5repack -i `1`.h5 -o `1`-compressed.h5 -f GZIP=1\>\"", "]"}], 
+       "[", "name", "]"}], "]"}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"ExternalEvaluate", "[", 
+      RowBox[{"pythonSession", ",", 
+       RowBox[{
+        RowBox[{"StringTemplate", "[", 
+         RowBox[{
+          RowBox[{"postProcessing", "[", "sym", "]"}], "[", "geometry", "]"}],
+          "]"}], "[", 
+        RowBox[{"name", ",", 
+         RowBox[{"Directory", "[", "]"}]}], "]"}]}], "]"}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"Run", "[", 
+      RowBox[{
+       RowBox[{"StringTemplate", "[", "\"\<rm `1`.h5\>\"", "]"}], "[", "name",
+        "]"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}]}], "Input",
+ InitializationCell->True,
+ CellLabel->"In[11]:=",ExpressionUUID->"0d788ae7-c923-4f4a-be7a-23ad2d3ee85d"],
+
+Cell[BoxData["\<\"/home/george/Documents/git-repos/spartans/examples/1.double-\
+chamber\"\>"], "Output",
+ CellChangeTimes->{3.860329178577558*^9},
+ CellLabel->"Out[13]=",ExpressionUUID->"3f878707-84e4-46b5-9f61-f9018152932c"]
+}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Exporting Inputs ", "Item",
+ CellChangeTimes->{{3.860328749964486*^9, 3.860328754751357*^9}, {
+  3.860328929952731*^9, 
+  3.860328932745738*^9}},ExpressionUUID->"e0b678cf-13e5-461c-a448-\
+8994d4eec6e3"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"postProcessing", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], "=", 
+   "\"\<\nimport h5py\nimport numpy as np\nimport os\n\nwith \
+h5py.File('`2`/`1`-compressed.h5','a') as f:\n    \
+f['000--A'].attrs['material']='A'\n    f['000--A'].attrs['mesh']='000'\n    \
+f['connectivity_info']['000--A_000--A'].attrs['outgoing_structure']='000--A'\n\
+    f['connectivity_info']['000--A_000--A'].attrs['incoming_structure']='000--\
+A'\n    f['connectivity_info']['connectivity'].attrs['ordering']=np.array([b'\
+000'])\n\>\""}], ";"}]], "Input",
+ CellLabel->"In[68]:=",ExpressionUUID->"b29d47ad-5b2e-4f14-802e-520ac4503eff"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{"Dimensions", ",", 
+   RowBox[{
+    RowBox[{"prepareInputs", "[", "\"\<SO2\>\"", "]"}], "[", 
+    "\"\<double-chamber\>\"", "]"}], ",", 
+   RowBox[{"{", "2", "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.860328946096616*^9, 3.860328954795216*^9}, {
+  3.8603291013327627`*^9, 3.860329104899579*^9}},
+ CellLabel->
+  "In[126]:=",ExpressionUUID->"ad1c086a-07ad-4a91-9efd-4747131cb422"],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"\<\"A\"\>", "\[Rule]", 
+    RowBox[{"\[LeftAssociation]", 
+     RowBox[{
+      RowBox[{"\<\"velocities\"\>", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"48", ",", "3"}], "}"}]}], ",", 
+      RowBox[{"\<\"frequencies\"\>", "\[Rule]", 
+       RowBox[{"{", "48", "}"}]}], ",", 
+      RowBox[{"\<\"diagonal\"\>", "\[Rule]", 
+       RowBox[{"{", "48", "}"}]}], ",", 
+      RowBox[{"\<\"mixing_matrix\"\>", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"48", ",", "48"}], "}"}]}]}], "\[RightAssociation]"}]}], ",", 
+   
+   RowBox[{"\<\"000\"\>", "\[Rule]", 
+    RowBox[{"\[LeftAssociation]", 
+     RowBox[{
+      RowBox[{"\<\"vertices\"\>", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"5658", ",", "3"}], "}"}]}], ",", 
+      RowBox[{"\<\"tetrahedra_indices\"\>", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"16395", ",", "4"}], "}"}]}], ",", 
+      RowBox[{"\<\"triangle_indices\"\>", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"11312", ",", "3"}], "}"}]}], ",", 
+      RowBox[{"\<\"surface_normals\"\>", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"11312", ",", "3"}], "}"}]}]}], "\[RightAssociation]"}]}], 
+   ",", 
+   RowBox[{"\<\"connectivity_info\"\>", "\[Rule]", 
+    RowBox[{"\[LeftAssociation]", 
+     RowBox[{
+      RowBox[{"\<\"connectivity\"\>", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "1"}], "}"}]}], ",", 
+      RowBox[{"\<\"000--A_000--A\"\>", "\[Rule]", 
+       RowBox[{"{", "2", "}"}]}], ",", 
+      RowBox[{"\<\"bounce_tensors\"\>", "\[Rule]", 
+       RowBox[{"{", "2", "}"}]}]}], "\[RightAssociation]"}]}], ",", 
+   RowBox[{"\<\"000--A\"\>", "\[Rule]", 
+    RowBox[{"\[LeftAssociation]", 
+     RowBox[{"\<\"surface_injection\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"48", ",", "11312", ",", "3"}], "}"}]}], 
+     "\[RightAssociation]"}]}]}], "\[RightAssociation]"}]], "Output",
+ CellChangeTimes->{
+  3.860328956336287*^9, 3.86032898915694*^9, {3.86032909570234*^9, 
+   3.860329105194251*^9}, 3.8603292029836187`*^9, 3.860336543750667*^9},
+ CellLabel->
+  "Out[126]=",ExpressionUUID->"fda65c33-a50b-43ca-8a94-b5f3d9738fc6"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"exportInputs", "[", "\"\<SO2\>\"", "]"}], "[", 
+  "\"\<double-chamber\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.860329207428771*^9, 3.860329208262596*^9}},
+ CellLabel->"In[70]:=",ExpressionUUID->"1e1c4622-53ed-46d1-b720-47065856e802"],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{3.8603292088547287`*^9},
+ CellLabel->"Out[70]=",ExpressionUUID->"381bfa17-2b04-4758-8036-6164b6e2a41c"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1440, 786},
+WindowMargins->{{1440, Automatic}, {0, Automatic}},
+PrivateNotebookOptions->{"CloudPublishPath"->"/Published/spartans-tutorials_\
+double-chamber-flow_export-files.nb"},
+FrontEndVersion->"13.0 for Linux x86 (64-bit) (December 2, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"a3bb69ac-362f-4e3b-9a43-bec40057d4a4"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 278, 4, 69, "Chapter",ExpressionUUID->"88a630b8-b564-49ec-b697-579ea9340636"],
+Cell[861, 28, 170, 3, 53, "Subtitle",ExpressionUUID->"097b54bc-523d-42e3-96de-cb076598cddb"],
+Cell[CellGroupData[{
+Cell[1056, 35, 157, 3, 68, "Section",ExpressionUUID->"1903f482-d0c3-41ee-9e03-03367764032a"],
+Cell[CellGroupData[{
+Cell[1238, 42, 155, 3, 32, "Item",ExpressionUUID->"1a2673c2-8972-4607-9a75-136f44cd5d14"],
+Cell[CellGroupData[{
+Cell[1418, 49, 8426, 205, 933, "Input",ExpressionUUID->"0d788ae7-c923-4f4a-be7a-23ad2d3ee85d",
+ InitializationCell->True],
+Cell[9847, 256, 225, 3, 33, "Output",ExpressionUUID->"3f878707-84e4-46b5-9f61-f9018152932c"]
+}, Open  ]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[10121, 265, 208, 4, 28, "Item",ExpressionUUID->"e0b678cf-13e5-461c-a448-8994d4eec6e3"],
+Cell[10332, 271, 697, 13, 257, "Input",ExpressionUUID->"b29d47ad-5b2e-4f14-802e-520ac4503eff"],
+Cell[CellGroupData[{
+Cell[11054, 288, 429, 10, 29, "Input",ExpressionUUID->"ad1c086a-07ad-4a91-9efd-4747131cb422"],
+Cell[11486, 300, 2164, 53, 79, "Output",ExpressionUUID->"fda65c33-a50b-43ca-8a94-b5f3d9738fc6"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[13687, 358, 272, 5, 29, "Input",ExpressionUUID->"1e1c4622-53ed-46d1-b720-47065856e802"],
+Cell[13962, 365, 151, 2, 33, "Output",ExpressionUUID->"381bfa17-2b04-4758-8036-6164b6e2a41c"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
