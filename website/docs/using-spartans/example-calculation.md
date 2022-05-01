@@ -105,3 +105,26 @@ structure(mesh(000)--material(A)):
 
 ABORT now if this is not what you expected.
 ```
+
+The output above is SpaRTaNS inferring the user-input dataset shapes by looking into the `database_directory`.
+This, along with the `output_directory` and `log_directory` can be changed by chaning the following lines in `parser.py`:
+
+``` python
+    from spartans.logger_builder import setup_logger
+    from spartans.parser_utils import print_spartans_logo
+
+# highlight-start
+    config_dict = {
+            'directories': {
+                'database_directory': './in-files',
+                'output_directory': './out-files',
+                'log_directory': './log-files'
+                }
+            }
+# highlight-end
+
+    # Set up log files
+    log_directory = config_dict['directories']['log_directory']
+    setup_logger('main_log', '{}/main_log.txt'.format(log_directory))
+    main_log = logging.getLogger('main_log')
+

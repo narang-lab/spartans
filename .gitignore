@@ -33,3 +33,4 @@ tutorials/*/log-files/*
 src/spartans.egg-info/*
 *checkpoint.ipynb
 */.ipynb_checkpoints/*
+*.swp
