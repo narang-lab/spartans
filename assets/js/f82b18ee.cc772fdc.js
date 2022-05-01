@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[340],{6036:function(e){e.exports=JSON.parse('{"allTagsPath":"/spartans/news/tags","name":"release","count":1,"permalink":"/spartans/news/tags/release"}')}}]);

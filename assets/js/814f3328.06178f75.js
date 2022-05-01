@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunktest_doc_website=self.webpackChunktest_doc_website||[]).push([[535],{5641:function(e){e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"1.0 Release","permalink":"/spartans/news/spartans-release"}]}')}}]);
