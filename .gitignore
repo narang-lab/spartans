@@ -28,4 +28,6 @@ tests/*/out-files/*
 tests/*/log-files/*
 examples/*/out-files/*
 examples/*/log-files/*
+tutorials/*/out-files/*
+tutorials/*/log-files/*
 src/spartans.egg-info/*
