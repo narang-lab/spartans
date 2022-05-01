@@ -24,7 +24,7 @@ These allow us to write the BTE as
 $$
 \left(\frac{\partial \Gamma_i}{\partial n_j} + \delta_{ij} \boldsymbol{v}_i\cdot\nabla_{\boldsymbol{r}}\right)\delta n_j = S_i,
 $$
-where summation is implied over repeated indices and we have written the forcing term as a *source* of carriers $S_i = \boldsymbol{F}\cdot\nabla_{\boldsymbol{k}} n_i$.
+where summation is implied over repeated indices and we have written the forcing term as a *source* of carriers $S_i$.
 
 Next, we separate the collision operator into diagonal terms, representing decay with lifetime $\tau_i$, and off-diagonal ‘mixing’ terms:
 $$
@@ -55,9 +55,18 @@ $$
 This approach converges so long as the spectral radius of $G_{ij}$ is less than unity. 
 Otherwise more sophisticated approaches like [Jacobi weighting](https://arxiv.org/abs/1811.01059) or alternate decompositions (e.g. choosing artificially smaller $\tau_{ij}^{-1}$, so that $M_{ij}$ has non-zero diagonal entries) must be used.
 
-### References
+## References
 
-[Varnavides+2018](https://arxiv.org/abs/1811.01059)
+### Spatially-Resolved Transport
 
-[Jermyn+2017](https://arxiv.org/abs/1707.07060)
+For more details on the formalism behind SpaRTaNS implementation, please consult the following papers:
 
+- Georgios Varnavides, Adam S. Jermyn, Polina Anikeeva, and Prineha Narang (2019), Phys. Rev. B 100, 115402. [[publisher's copy]](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.100.115402), [[pre-print copy]](https://arxiv.org/abs/1811.01059)
+
+- Adam S. Jermyn, Giulia Tagliabue, Harry A. Atwater, William A. Goddard, III, Prineha Narang, and Ravishankar Sundararaman (2019), Phys. Rev. Materials 3, 075201. [[publisher's copy]](https://journals.aps.org/prmaterials/abstract/10.1103/PhysRevMaterials.3.075201), [[pre-print copy]](https://arxiv.org/abs/1707.07060)
+
+### Generating Collision Operators
+
+For more details on the formalism behind generating physically-plausible linearized collision operators, please consult the following paper:
+
+- Georgios Varnavides, Adam S. Jermyn, Polina Anikeeva, and Prineha Narang (2022), ArXiv:2204.06004. [[pre-print copy]](https://arxiv.org/abs/2204.06004)
