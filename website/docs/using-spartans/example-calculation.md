@@ -133,7 +133,6 @@ SpaRTaNS then proceeds to set up the necessary `Structure` and `Interface` objec
 
 SpaRTaNS solves the BTE iteratively (see [Formalism section](../formalism/boltzmann-transport-theory.md)).
 As such, inputs/outputs are stored internally for each structure and iteration number.
-
 However, to avoid large output size, and since the steady-state distribution is given by the accumulated distribution functions at each iteration, SpaRTaNS only writes the accumulated distribution and surface fluxes in `{outDir}/accumulated_{structureId}.h5` by default.
 If individual distribution outputs are required (e.g. for debugging), the output files 'verbosity' can be controlled by changing the following lines:
 
@@ -163,8 +162,8 @@ for struct in structures:
     for interface_id, interface_object in struct.interfaces.items():
         interface_object.pull_from()
 ```
-
-This can be changed by modifying the following lines in `parser.py`:
+SpaRTaNS ships with some built-in `Scheduler` objects, which can be found [here](https://github.com/narang-lab/spartans/blob/main/src/spartans/scheduler.py).
+These can be selected to expanded by modifying the following lines in `parser.py`:
 ```python
     # Set up Scheduler
     # Note: change this to fit your needs, and/or define new schedulers in scheduler.py
